@@ -1,0 +1,1 @@
+alter table tb_token rename column is_validated to validated;

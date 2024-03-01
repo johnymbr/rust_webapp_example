@@ -1,0 +1,49 @@
+services:
+  rasrme-db:
+    image: postgres:15.2
+    volumes:
+      - ~/.docker-conf/rasrme/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=db_example
+      - POSTGRES_USER=example_user
+      - POSTGRES_PASSWORD=123456
+  rasrme-rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rasrme/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rasrme/rabbitmq/log/:/var/log/rabbitmq
+    command: ["bash", "-c", "chmod 400 /var/lib/rabbitmq/.erlang.cookie; rabbitmq-server"]
+  rasrme-mailhog:
+    image: mailhog/mailhog
+    container_name: 'mailhog'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+  # rasrme-redis:
+  #   image: redis:6.0
+  #   volumes:
+  #     - ~/.docker-conf/anothergtw/redis:/data
+  #   ports:
+  #     - "6379:6379"
+  #   command: redis-server --save 20 1 --loglevel warning --requirepass h973jE6HFT6huv4ghdVXhfNwy7xdXcmx
+  # anothergtw-jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   volumes:
+  #     - ~/.docker-conf/anothergtw/jaeger:/badger
+  #   ports:
+  #     - "6831:6831/udp"
+  #     - "16686:16686"
+  #     - "4317:4317"
+  #     - "4318:4318"
+  #   environment:
+  #     - SPAN_STORAGE_TYPE=badger
+  #     - BADGER_EPHEMERAL=false
+  #     - BADGER_DIRECTORY_VALUE=/badger/data
+  #     - BADGER_DIRECTORY_KEY=/badger/key
+  #     - COLLECTOR_OTLP_ENABLED=true
+  #     - LOG_LEVEL=debug

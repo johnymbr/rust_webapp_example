@@ -1,0 +1,1 @@
+alter table tb_refresh_token rename column is_revoked to revoked;
